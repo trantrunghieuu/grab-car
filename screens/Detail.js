@@ -17,8 +17,10 @@ export class Detail extends React.Component {
 return (
       <View style={styles.container}>
           <Text>Detail</Text>
-          <Text>latitude:{route.params.latitude}</Text>
-          <Text>longitude:{route.params.longitude}</Text>
+          <Text>ori_latitude:{route.params.ori_latitude}</Text>
+          <Text>ori_longitude:{route.params.ori_longitude}</Text>
+          <Text>des_latitude:{route.params.des_latitude}</Text>
+          <Text>des_longitude:{route.params.des_longitude}</Text>
           <Button onPress={()=>this.props.navigation.navigate('Setting')} title="Go to Setting"/>
       </View>
   );

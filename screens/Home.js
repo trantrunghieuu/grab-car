@@ -4,6 +4,7 @@ import MapView, { Marker,Callout,Circle } from 'react-native-maps';
 import { StyleSheet, Text, View,Button, SafeAreaView,Dimensions,Alert,Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
  class Home extends React.Component {
+   
    choice = () =>
     Alert.alert(
       "Lat : " +JSON.stringify(this.state.markers.coordinate.latitude),

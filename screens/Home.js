@@ -1,18 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import MapView, { Marker,Callout,Circle } from 'react-native-maps';
-import { StyleSheet, Text, View,Button, SafeAreaView,Dimensions,Alert,Pressable } from 'react-native';
+import { StyleSheet, Text, View,Button, SafeAreaView,Dimensions,Alert,Pressable,Image,TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Constants } from 'expo';
 import * as Permissions from 'expo-permissions';
 import * as Location from "expo-location";
 
 const {width, height} = Dimensions.get('window')
-const SCREEN_HEIGHT = height
-const SCREEN_WIDTH = width
-const ASPECT_RATIO = width / height
-const LATITUDE_DELTA = 0.0922
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
  class Home extends React.Component {
   constructor(props) {
     id=1;
@@ -115,7 +110,8 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
     render(){
         const {navigation} = this.props
 return (
-    <SafeAreaView>
+    <SafeAreaView style={{width:Dimensions.get('window').width,
+                          height:Dimensions.get('window').height}}>
     <View style={styles.multiButtonContainer}>
     <Text style={styles.grab}>GRAB</Text>
     <Pressable style={styles.satellite} onPress={this.setSatellite}>
@@ -128,12 +124,16 @@ return (
 
     {
           this.state.locationResult === null ?
-          <Text>Finding your current location...</Text> :
+          <Image style={styles.loading}
+          source={require('../assets/loader.gif')}>
+
+          </Image> :
           this.state.hasLocationPermissions === false ?
             <Text>Location permissions are not granted.</Text> :
             this.state.mapRegion === null ?
             <Text>Map region doesn't exist.</Text> :
-            <MapView
+            <View>
+              <MapView
               provider={this.props.provider}
               style={styles.map}
               //  initialRegion={this.state.region}
@@ -149,14 +149,21 @@ return (
  coordinate={this.state.markers.coordinate}
  pinColor={this.state.markers.color}
 >
- 
-   {/* <View style={styles.marker}>
-   <Text style={styles.text}> 
-   {JSON.stringify(this.state.markers.coordinate.latitude)}</Text>
- </View> */}
+
 </Marker>
 </MapView>
+            </View>
         }
+        <View style={{backgroundColor:'white', width:width,marginTop:10,borderRadius: 20}}>
+<View style={styles.container_whereto}>
+<Image style={{width:20, height:20,marginLeft:20}}
+       source={require('../assets/favicon.png')}>
+
+          </Image>
+  <Text style={{alignItems: 'center',justifyContent: 'center',margin:10, fontSize:20,fontWeight: 'bold'}}>Đến Đâu?</Text>
+</View>
+
+
 <Pressable style={styles.button} onPress={() => {
             this.props.navigation.navigate('Detail', {
               ori_latitude: this.state.currentLocation.latitude,
@@ -165,8 +172,10 @@ return (
               des_longitude:JSON.stringify(this.state.markers.coordinate.longitude)
             });
           }}>
-<Text style={styles.text}> Chọn </Text>
+<Text style={styles.text}> Xác nhận điểm đón </Text>
 </Pressable>
+</View>
+
   </SafeAreaView>
   );
 
@@ -186,9 +195,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  loading: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width:width,
+  },
   map:{
-    width: Dimensions.get('window').width,
-    height: 630,
+    width:width,
+    height: height-350,
     paddingTop:20,
     paddingVertical: 12,
     paddingHorizontal: 32,
@@ -208,7 +222,10 @@ button: {
   justifyContent: 'center',
   borderRadius: 4,
   elevation: 3,
-  paddingTop:4,
+  paddingTop:10,
+  marginTop:20,
+  marginLeft:10,
+  marginRight:10,
   backgroundColor: '#e32f45',
   height:45
 },
@@ -234,8 +251,17 @@ text: {
 multiButtonContainer: {
   flexDirection: 'row',
   justifyContent: 'space-between',
-  marginTop:10,
+  marginTop:5,
   marginRight:10,
   marginLeft:5
+},
+container_whereto:{
+  elevation: 3,
+  paddingTop:10,
+  margin:10,
+  backgroundColor:'#c2d6d6',
+  alignItems: 'center',
+  flexDirection: 'row',
+  borderRadius: 20
 }
 });

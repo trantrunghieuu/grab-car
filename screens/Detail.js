@@ -40,6 +40,11 @@ return (
           showsUserLocation={true}
           strokeWidth={1}/>
         </MapView>
+        <Marker>
+        coordinate={{latitude: Number(route.params.des_latitude),
+                    longitude: Number(route.params.des_longitude),}}
+        pinColor='red'
+        </Marker>
     </View>
   </SafeAreaView>
   
